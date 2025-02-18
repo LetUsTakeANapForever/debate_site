@@ -12,7 +12,7 @@ app.get("/", (req, res) => {
   res.render("login");
 });
 
-app.get("/", (req, res) => {
+app.get("/signup", (req, res) => {
   res.render("signup");
 });
 
