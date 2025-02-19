@@ -51,21 +51,21 @@ app.post("/login", async (req, res) => {
     const exist = await collection.findOne({ username: req.body.username });
 
     if (!exist) {
-      res.send(`<script>
+      return res.send(`<script>
         alert("Username isn't found.");
-        window.location.href = "/login";
+        window.location.href = "/";
         </script>`);
     }
 
     // compare hashed password from DB with the plain text
-    const doesMatch = await bcrypt.compare(req.body.password);
+    const doesMatch = await bcrypt.compare(req.body.password, exist.password);
 
     if (doesMatch) {
       res.render("home");
     } else {
       res.send(`<script>
         alert("Wrong password.");
-        window.location.href = "/login";
+        window.location.href = "/";
         </script>`);
     }
   } catch {
