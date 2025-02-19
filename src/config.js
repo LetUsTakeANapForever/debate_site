@@ -1,7 +1,6 @@
 const mongoose = require("mongoose");
-const connect = mongoose.connect("mongodb://localhost:27017/login-tut");
+const connect = mongoose.connect("mongodb://127.0.0.1:27017/login-tut");
 
-//Check db connection
 connect
   .then(() => {
     console.log("Database connected successfully");
@@ -10,7 +9,6 @@ connect
     console.log("Database cannot be connected.");
   });
 
-//Create a schema
 const loginSchema = new mongoose.Schema({
   username: {
     type: String,
@@ -22,7 +20,6 @@ const loginSchema = new mongoose.Schema({
   },
 });
 
-// Colection Part : create a model
-const collection = new mongoose.node("users", loginSchema); //(collectionName, schema)
+const collection = new mongoose.model("users", loginSchema);
 
 module.exports = collection;
