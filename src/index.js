@@ -17,6 +17,10 @@ app.get("/", (req, res) => {
   res.render("login");
 });
 
+app.get("/signup", (req, res) => {
+  res.render("signup");
+});
+
 app.post("/signup", async (req, res) => {
   const data = {
     username: req.body.username,
@@ -36,12 +40,17 @@ app.post("/signup", async (req, res) => {
   } else {
     // hash password using bcrypt
     const saltRounds = 10; //Number of salt round for bcrypt
-    const hashedPassword = await hash.bcrypt(data.password.saltRounds);
+    const hashedPassword = await bcrypt.hash(data.password, saltRounds);
 
     data.password = hashedPassword;
 
     const userdata = await collection.insertMany(data);
     console.log(userdata);
+
+    res.send(`<script>
+      alert("Successfully signed up!");
+      window.location.href = "/signup";
+      </script>`);
   }
 });
 
@@ -73,11 +82,7 @@ app.post("/login", async (req, res) => {
   }
 });
 
-app.get("/signup", (req, res) => {
-  res.render("signup");
-});
-
-const port = 5000;
+const port = process.env.PORT || 5000;
 app.listen(port, () => {
   console.log(`Server running on Port: ${port}`);
 });
