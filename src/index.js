@@ -2,12 +2,23 @@ const express = require("express");
 const path = require("path");
 const bcrypt = require("bcrypt");
 const collection = require("./config");
+const session = require("express-session");
 
 const app = express();
 // convert data into JSON format
 app.use(express.json());
 
 app.use(express.urlencoded({ extended: false }));
+
+// middleware in Node.js is used to handle sessions : which are a way of storing data on the server for a specific user as they navigate through different pages of a web application
+app.use(
+  session({
+    secret:
+      "9b59410512e3c05f373a1ec81957b74d85df85ad2d8a30479b35f736e43ac7e374b33260605a72b05a01c725f38d592654930291b9a1163d25a1a6b0d15b100c",
+    resave: false,
+    saveUninitialized: true,
+  })
+);
 
 app.set("view engine", "ejs");
 // static file
@@ -70,7 +81,7 @@ app.post("/login", async (req, res) => {
     const doesMatch = await bcrypt.compare(req.body.password, exist.password);
 
     if (doesMatch) {
-      res.render("home");
+      res.render("home", { username: req.body.username });
     } else {
       res.send(`<script>
         alert("Wrong password.");
@@ -80,6 +91,16 @@ app.post("/login", async (req, res) => {
   } catch {
     res.send("Error found, try again.");
   }
+});
+
+app.post("/logout", (req, res) => {
+  // Destroy session and log the user out
+  req.session.destroy((err) => {
+    if (err) {
+      return res.send("Error during logout.");
+    }
+    res.redirect("/");
+  });
 });
 
 const port = process.env.PORT || 5000;

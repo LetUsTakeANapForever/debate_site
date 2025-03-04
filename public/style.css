@@ -1,9 +1,4 @@
-*{
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-body{
+login-signup-body{
     height: 100vh;
     display: flex;
     align-items: center;
@@ -55,4 +50,26 @@ body{
 
 .submit-btn:hover{
     background-color:rgb(29, 7, 192);
+}
+
+.profile-container {
+    display: flex;
+    align-content: flex-start;
+    justify-content: space-between;
+    gap: 100px;
+    width: 100%;
+}
+
+.logout-btn {
+    padding: 8px 12px;
+    background-color: rgb(210, 56, 56);
+    color: white;
+    border: none;
+    cursor: pointer;
+    font-size: 14px;
+    border-radius: 5px;
+}
+
+.logout-btn:hover {
+    background-color: darkred;
 }
